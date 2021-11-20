@@ -4,15 +4,10 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+![Jordan Jambazov](/assets/images/jordan-jambazov-outdoor-horizontal.jpg)
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+My name is Jordan Jambazov. A relatively young man born in 1993. I am a proud father of two sons and a lucky husband of one wife. I grew up with my twin brother - Momchil. Being children of the 90s, we spent most of our free time playing outdoors. Around the year of 2000 we discovered the other type of games. Games enabled by computers and software. The local PC Gaming Club became a favourite place to attend.
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+Once I learned that computer games are created in programming languages the irreversible process started. I became more passionate about programming itself than computer games. In 2005 our parents got us our first computer. It had a Pentium 4 CPU and 512MB of RAM. On this machine I learned the basics of programming.
 
-
-[jekyll-organization]: https://github.com/jekyll
+Nowadays, two decades later, I'm even more passionate about programming. It opened so many doors in front of me. Besides programming I enjoy playing the guiter, reading books and building with LEGO Technic. I like to do all this activities with my lovely family.
