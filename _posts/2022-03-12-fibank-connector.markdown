@@ -19,19 +19,7 @@ Why do I need a separate connector? Because the Fibank reporting has a few limit
 
 The authentication flow is quite weird. It's a stateful mixture of OAuth2 with a session based authentication. HTML, JSON and HTTP headers are used for transfer purposes. Check the following sequence diagram.
 
-```mermaid
-sequenceDiagram
-    participant client
-    participant server
-    client->>server: GET /oauth2-server/login?client_id=E_BANK
-    server->>client: save cookie
-    client->>server: GET /oauth2-server/oauth/authorize?state=<uuid>
-    server->>client: extract CSRF from HTML (<meta name="csrf" />)
-    client->>server: GET /oauth2-server/api/v1/sywscertificate/fnGetCertsForLogin?userName=<username>
-    server->>client: save cookie
-    client->>server: POST /oauth2-server/login?username=<username>&password=<password>&_csrf=<csrf>
-    server->>client: Location redirect /someUrl?access_token=<access_token>
-```
+![Auth Sequence Diagram](/assets/images/fibank-connector-sequence-diagram.svg)
 
 After parsing the access token from the redirect, you can use it for further authentication to the FiBank API. Check the [auth implementation of the connector](https://github.com/jordanjambazov/fibank-connector/blob/880b972ea13e8e9d5203c82036f7d5b6172c9961/connector/auth.py).
 
