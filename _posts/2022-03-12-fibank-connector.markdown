@@ -5,7 +5,7 @@ date:   2022-03-12 17:35:00 +0200
 categories: projects
 ---
 
-In this blog post I'm would like to share about a small personal project. A connector to the Fibank e-banking platform exporting all historical transactions. This allows me to easily feed the transaction data into other software (Airtable, Google Spreadsheets, Odoo) and make sense out of it.
+In this blog post I would like to share about a small personal project. A connector to the Fibank e-banking platform exporting all historical transactions. This allows me to easily feed the transaction data into other software (Airtable, Google Spreadsheets, Odoo) and make sense out of it.
 
 Why do I need a separate connector? Because the Fibank reporting has a few limitations.
 
