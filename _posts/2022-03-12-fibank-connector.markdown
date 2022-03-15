@@ -13,7 +13,7 @@ Why do I need a separate connector? Because the Fibank reporting has a few limit
 - One cannot filter by transaction type, party, etc
 - The platform doesn't provide capabilities to export all transactions to a machine-readable format
 - By reverse-engineering their API, I realized it provides valuable information not visible in their UI
-- The connector would allow me to further enrich the payload of the transactions and adapt them to my needs
+- The connector would allow me to further enrich the transaction payload and adapt it to my needs
 
 ## Reverse-engineering the authentication
 
@@ -98,7 +98,7 @@ For simple authentication purposes, the connector uses a randomly generated UUID
 
 We have a web process running the webserver. The [clock process](https://github.com/jordanjambazov/fibank-connector/blob/799a91cc2431b0d03325c6b9a6b41616ea9ba470/clock.py) periodically connects to the e-banking platform and reconciles the transactions. The actual process of [deploying the service to Heroku is outside the scope of this blog post, as you could find this information elsewhere](https://devcenter.heroku.com/articles/deploying-python).
 
-## Integrating the connector with Airtable (or whatever)
+## Integrating the connector with Airtable
 
 In this case, I'm integrating with Airtable. Of course, you can integrate with any tool that you'd like. You can achieve a similar result with other software.
 
