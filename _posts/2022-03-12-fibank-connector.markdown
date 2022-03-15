@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Fibank Connector - Making sense out of my banking transactions"
-date:   2022-03-12 17:35:00 +0200
+date:   2022-03-16 01:59:00 +0200
 categories: projects
 ---
 
