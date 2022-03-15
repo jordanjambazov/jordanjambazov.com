@@ -94,7 +94,21 @@ web: python manage.py runserver 0.0.0.0:$PORT
 clock: python clock.py
 ```
 
-There is a web process running the web server, as well as a clock process periodically connecting to the e-banking platform and reconciling the transactions. The actual process of [deploying the service to Heroku is outside the scope of this blog post, as you could find this information elsewhere](https://devcenter.heroku.com/articles/deploying-python).
+For simple authentication purposes the connector uses a randomly generated UUID. Generate one and store it the `AUTH_SECRET` environment variable. The e-banking username and password go to `FIBANK_USERNAME` & `FIBANK_PASSWORD`.
+
+There is a web process running the web server, as well as a [clock process](https://github.com/jordanjambazov/fibank-connector/blob/799a91cc2431b0d03325c6b9a6b41616ea9ba470/clock.py) periodically connecting to the e-banking platform and reconciling the transactions. The actual process of [deploying the service to Heroku is outside the scope of this blog post, as you could find this information elsewhere](https://devcenter.heroku.com/articles/deploying-python).
+
+## Integrating the connector with Airtable (or whatever)
+
+In this case I'm integrating with Airtable. Of course, you can integrate with any tool that you'd like. A similar result can be achieved with any tool of choice (Google Spreadsheets included).
+
+- Create a workspace and a table within it
+- Use Data Fetcher to feed the transaction data from `https://<your_app>.herokuapp.com/all-transactions/`, make sure to pass the authorization token
+  ![Fibank Connector - Airtable Data Fetcher](/assets/images/fibank-connector-airtable-data-fetcher.png)
+- Run the request and populate the table
+- Now that you have the data populated in Airtable, you can generate charts similar to this one (debit vs credit):
+  ![Fibank Connector - Debit vs Credit](/assets/images/fibank-connector-airtable-chart.png)
+- You can filter by transaction type, group by vendor, have better visibility on how much you spend in fees. This approach could help you to make sense out of your banking transactions.
 
 ## Conclusion
 
