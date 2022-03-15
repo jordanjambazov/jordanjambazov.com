@@ -85,7 +85,17 @@ def all_transactions(request):
     })
 ```
 
+## Deploying the connector to Heroku
+
+Now we are ready to find a home for the connector. I have chosen Heroku due to the simplicity of spinning out a service there. The `Procfile` is as simple at this:
+
+```
+web: python manage.py runserver 0.0.0.0:$PORT
+clock: python clock.py
+```
+
+There is a web process running the web server, as well as a clock process periodically connecting to the e-banking platform and reconciling the transactions. The actual process of [deploying the service to Heroku is outside the scope of this blog post, as you could find this information elsewhere](https://devcenter.heroku.com/articles/deploying-python).
+
 ## Conclusion
 
 Even though this post presenting the Fibank connector that I prepared, the approach would be similar for any other e-banking system. Let's generalize it as follows: 1) connect to the API, 2) reconcile the transactions, 3) re-expose the data in order to analyze it in other software, or simply use SQL to query it.
-
