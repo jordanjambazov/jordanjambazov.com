@@ -1,23 +1,25 @@
 ---
 layout: post
 title:  "Fibank Connector - Making sense out of my banking transactions"
-date:   2022-03-12 17:35:00 +0200
+date:   2022-03-16 01:59:00 +0200
 categories: projects
 ---
 
-In this blog post I'm would like to share about a small personal project. A connector to the Fibank e-banking platform exporting all historical transactions. This allows me to easily feed the transaction data into other software (Airtable, Google Spreadsheets, Odoo) and make sense out of it.
+![Fibank Connector Logo](/assets/images/fibank-connector-logo.png)
+
+In this blog post, I would like to share [a connector to the Fibank platform](https://github.com/jordanjambazov/fibank-connector) exporting historical transactions, thus allowing me to easily feed transaction data into other software (Airtable, Google Spreadsheets, Odoo) and analyze it.
 
 Why do I need a separate connector? Because the Fibank reporting has a few limitations.
 
 - It is impossible to filter a date ranger bigger than 30 days
 - One cannot filter by transaction type, party, etc
-- The platform doesn't provide capabilities to export all transactions to a machine readable format
-- By reverse engineering their API, I realized it provides valuable information not visible in their UI
-- The connector would allow me to further enrich the payload of the transactions and adapt them to my needs
+- The platform doesn't provide capabilities to export all transactions to a machine-readable format
+- By reverse-engineering their API, I realized it provides valuable information not visible in their UI
+- The connector would allow me to further enrich the transaction payload and adapt it to my needs
 
-## Reverse engineering the authentication
+## Reverse-engineering the authentication
 
-The authentication flow is quite weird. It's a stateful mixture of OAuth2 with a session based authentication. HTML, JSON and HTTP headers are used for transfer purposes. Check the following sequence diagram.
+The authentication flow is a weird stateful mixture of OAuth2 with a session-based authentication. It uses HTML, JSON, and HTTP headers for transfer purposes. Check the following sequence diagram.
 
 ![Auth Sequence Diagram](/assets/images/fibank-connector-sequence-diagram.svg)
 
@@ -25,7 +27,7 @@ After parsing the access token from the redirect, you can use it for further aut
 
 ## Connecting to the API
 
-For the use case of our connector we are going to use the following authenticated endpoints:
+For the use case of our connector, we are going to use the following authenticated endpoints:
 
 - `GET sywspicklist/sywspicklist/getFilteredAccounts` - returns all accounts with the corresponding IBAN
 - `GET sywsquery/sywsquery/GetCustBal?FromDate=<date>&ToDate=<date>&Iban=<iban>&StmtType=T&isAccountFromPSD2=false` - returns all transactions in the given timeframe
@@ -59,7 +61,7 @@ class Engine:
                 # store transaction in DB
 ```
 
-Now as the transaction data is in our control we could analyze it. Let's use SQL for the purpose.
+Now, as the transaction data is in our control, we could analyze it. Let's use SQL for this purpose.
 
 ```sql
 $ mysql -u fibank -p -h localhost fibank
@@ -74,7 +76,7 @@ mysql> select count(*) from transaction_transaction;
 
 ## Exposing the transaction data via HTTP
 
-I also decided to expose the transaction data via HTTP, in order to easily integrate with Airtable.
+I also decided to expose the transaction data via HTTP to integrate easily with Airtable.
 
 ```python
 def all_transactions(request):
@@ -85,7 +87,31 @@ def all_transactions(request):
     })
 ```
 
+## Deploying the connector to Heroku
+
+Now we are ready to find a home for the connector. I have chosen Heroku due to the simplicity of spinning out a service there. The `Procfile` is as simple at this:
+
+```
+web: python manage.py runserver 0.0.0.0:$PORT
+clock: python clock.py
+```
+
+For simple authentication purposes, the connector uses a randomly generated UUID. Generate one and store it in the `AUTH_SECRET` environment variable. The e-banking username and password go to `FIBANK_USERNAME` & `FIBANK_PASSWORD`.
+
+We have a web process running the webserver. The [clock process](https://github.com/jordanjambazov/fibank-connector/blob/799a91cc2431b0d03325c6b9a6b41616ea9ba470/clock.py) periodically connects to the e-banking platform and reconciles the transactions. The actual process of [deploying the service to Heroku is outside the scope of this blog post, as you could find this information elsewhere](https://devcenter.heroku.com/articles/deploying-python).
+
+## Integrating the connector with Airtable
+
+In this case, I'm integrating with Airtable. Of course, you can integrate with any tool that you'd like. You can achieve a similar result with other software.
+
+- Create a workspace and a table within it
+- Use Data Fetcher to feed the transaction data from `https://<your_app>.herokuapp.com/all-transactions/`, make sure to pass the authorization token
+  ![Fibank Connector - Airtable Data Fetcher](/assets/images/fibank-connector-airtable-data-fetcher.png)
+- Run the request and populate the table
+- Now that you have the data populated in Airtable, you can generate charts similar to this one (debit vs credit):
+  ![Fibank Connector - Debit vs Credit](/assets/images/fibank-connector-airtable-chart.png)
+- You can filter by transaction type, group by vendor, have better visibility on how much you spend in fees. This approach could help you to analyze your banking transactions.
+
 ## Conclusion
 
-Even though this post presenting the Fibank connector that I prepared, the approach would be similar for any other e-banking system. Let's generalize it as follows: 1) connect to the API, 2) reconcile the transactions, 3) re-expose the data in order to analyze it in other software, or simply use SQL to query it.
-
+Even though this post presents the Fibank connector that I prepared, the approach would be similar for any other e-banking system. Let's generalize it as follows: 1) connect to the API, 2) reconcile the transactions, 3) re-expose the data in order to analyze it in other software, or simply use SQL to query it.
