@@ -9,7 +9,7 @@ I quit smoking. This post serves the purpose of a memo, as well as a public anno
 
 During the past 12 years I used to be a heavy smoker - rarely smoking less than a pack of cigarettes per day.
 
-Why did I start smoking in the first place? I guess for the social element of it. People I used to hang out with smoked - and so did I. People with whom I hang out changed accross the years, but the habit stayed.
+Why did I start smoking in the first place? I guess for the social element of it. People I used to hang out with smoked - and so did I. People with whom I hang out changed across the years, but the habit stayed.
 
 Smoking isn't cool.
 
